@@ -65,7 +65,7 @@ while len(addList) < numToAdd:
         #submission.comments.replace_more(limit=None)
         for comment in submission.comments.list():
             try:
-                if random.randint(0,99) == 0 and comment.author not in addList and len(addList) < numToAdd and comment.author not in list(users):
+                if random.randint(0,499) == 0 and comment.author not in addList and len(addList) < numToAdd and comment.author not in list(users):
                     addList.append(comment.author.name)
             except:
                 pass
