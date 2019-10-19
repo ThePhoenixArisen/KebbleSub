@@ -49,7 +49,7 @@ for user in hitList:
 for user in users:
     users[user]["Rank"] = list(users).index(user) - 1
     if user not in modlist:
-        reddit.subreddit("HiddenCorner").flair.set(user, "#" + users[user]["Rank"], flair_template_id = "9038eac4-f29f-11e9-95c4-0e1c0032dcda")
+        reddit.subreddit("HiddenCorner").flair.set(user, "#" + str(users[user]["Rank"]), flair_template_id = "9038eac4-f29f-11e9-95c4-0e1c0032dcda")
 
 
 #Add new users
@@ -79,7 +79,7 @@ for user in addList:
     #Adds users
     reddit.subreddit("HiddenCorner").contributor.add(user)
     users[user] = {"Rank":lastRank + 1, "Posted":0}
-    reddit.subreddit("HiddenCorner").flair.set(user, "#" + users[user]["Rank"], flair_template_id = "676ff240-f29f-11e9-b538-0e052881cb30")
+    reddit.subreddit("HiddenCorner").flair.set(user, "#" + str(users[user]["Rank"]), flair_template_id = "676ff240-f29f-11e9-b538-0e052881cb30")
     lastRank = len(users) - 2
     selfText += "- \#" + str(users[user]["Rank"]) + "\t/u/" + user + "  \n"
 
