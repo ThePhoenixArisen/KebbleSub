@@ -77,9 +77,9 @@ while len(addList) < numToAdd:
 lastRank = len(users) - 2
 for user in addList:
     #Adds users
-    #reddit.subreddit("HiddenCorner").contributor.add(user)
+    reddit.subreddit("HiddenCorner").contributor.add(user)
     users[user] = {"Rank":lastRank + 1, "Posted":0}
-    #reddit.subreddit("HiddenCorner").flair.set(user, "#" + users[user]["Rank"], flair_template_id = "676ff240-f29f-11e9-b538-0e052881cb30")
+    reddit.subreddit("HiddenCorner").flair.set(user, "#" + users[user]["Rank"], flair_template_id = "676ff240-f29f-11e9-b538-0e052881cb30")
     lastRank = len(users) - 2
     selfText += "- \#" + str(users[user]["Rank"]) + "\t/u/" + user + "  \n"
 
