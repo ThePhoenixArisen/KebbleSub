@@ -28,12 +28,12 @@ for submission in reddit.subreddit("HiddenCorner").new(limit=100):
     #Checks all posts from past week and flags author as active
     now = int(datetime.datetime.timestamp(datetime.datetime.today()))
     postAge = now - submission.created_utc
-    if postAge <= 604800 and submission.author not in modlist:
-        users[submission.author]["Posted"] = 1
+    if postAge <= 604800 and submission.author.name not in modlist:
+        users[submission.author.name]["Posted"] = 1
     for comment in submission.comments.list():
         commentAge = now - comment.created_utc
-        if commentAge <= 604800 and comment.author not in modlist:
-            users[comment.author]["Posted"] = 1
+        if commentAge <= 604800 and comment.author.name not in modlist:
+            users[comment.author.name]["Posted"] = 1
 
 for user in users:
     #Kick users and add to removal list
@@ -65,7 +65,7 @@ while len(addList) < numToAdd:
         #submission.comments.replace_more(limit=None)
         for comment in submission.comments.list():
             try:
-                if random.randint(0,499) == 0 and comment.author not in addList and len(addList) < numToAdd and comment.author.name not in list(users):
+                if random.randint(0,499) == 0 and comment.author.name not in addList and len(addList) < numToAdd and comment.author.name not in list(users):
                     addList.append(comment.author.name)
             except:
                 pass
@@ -101,3 +101,4 @@ for user in users:
         selfText += "| \#" + str(users[user]["Rank"]) + " | " + user + " |  \n"
 
 reddit.subreddit("HiddenCorner").submit(title, selftext=selfText)
+print(selfText)
