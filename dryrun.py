@@ -30,6 +30,8 @@ for submission in reddit.subreddit("HiddenCorner").new(limit=100):
     postAge = now - submission.created_utc
     if postAge <= 604800 and submission.author.name not in modlist:
         users[submission.author.name]["Posted"] = 1
+
+    submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
         commentAge = now - comment.created_utc
         if commentAge <= 604800 and comment.author.name not in modlist:
@@ -56,8 +58,8 @@ for user in users:
 
 selfText += "#Added:\n\n"
 numToAdd = 102 - len(users)
-if numToAdd > 20:
-    numToAdd = 20 #NOTE: Remove restriction after sub reaches 100 members for 1st time
+if numToAdd > 40:
+    numToAdd = 40 #NOTE: Remove restriction after sub reaches 100 members for 1st time
 
 while len(addList) < numToAdd:
     # Creates add list

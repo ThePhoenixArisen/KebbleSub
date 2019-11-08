@@ -30,6 +30,8 @@ for submission in reddit.subreddit("HiddenCorner").new(limit=100):
     postAge = now - submission.created_utc
     if postAge <= 604800 and submission.author.name not in modlist:
         users[submission.author.name]["Posted"] = 1
+
+    submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
         commentAge = now - comment.created_utc
         if commentAge <= 604800 and comment.author.name not in modlist:
@@ -38,7 +40,10 @@ for submission in reddit.subreddit("HiddenCorner").new(limit=100):
 for user in users:
     #Kick users and add to removal list
     if users[user]["Posted"] == 0 and user not in modlist:
-        reddit.subreddit("HiddenCorner").contributor.remove(user)
+        try:
+            reddit.subreddit("HiddenCorner").contributor.remove(user)
+        except:
+            pass
         reddit.subreddit("HiddenCorner").flair.set(user, "Kicked", flair_template_id = "3bddf548-f29d-11e9-b16a-0ed4787532b4")
         hitList.append(user)
         selfText += "- \#" + str(users[user]["Rank"]) + "\t/u/" + user + "  \n"
@@ -56,8 +61,8 @@ for user in users:
 
 selfText += "#Added:\n\n"
 numToAdd = 102 - len(users)
-if numToAdd > 20:
-    numToAdd = 20 #NOTE: Remove restriction after sub reaches 100 members for 1st time
+if numToAdd > 40:
+    numToAdd = 40 #NOTE: Remove restriction after sub reaches 100 members for 1st time
 
 while len(addList) < numToAdd:
     # Creates add list
@@ -100,5 +105,5 @@ for user in users:
     if user not in modlist:
         selfText += "| \#" + str(users[user]["Rank"]) + " | " + user + " |  \n"
 
-reddit.subreddit("HiddenCorner").submit(title, selftext=selfText)
+reddit.subreddit("HiddenCorner").submit(title, selftext=selfText).mod.distinguish(how='yes', sticky=True)
 print(selfText)
