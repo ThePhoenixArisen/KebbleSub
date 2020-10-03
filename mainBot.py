@@ -28,14 +28,17 @@ for submission in reddit.subreddit("HiddenCorner").new(limit=100):
     #Checks all posts from past week and flags author as active
     now = int(datetime.datetime.timestamp(datetime.datetime.today()))
     postAge = now - submission.created_utc
-    if postAge <= 604800 and submission.author.name not in modlist:
+    if postAge <= 604800 and submission.author.name not in modlist and submission.author.name in users:
         users[submission.author.name]["Posted"] = 1
 
     submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
-        commentAge = now - comment.created_utc
-        if commentAge <= 604800 and comment.author.name not in modlist:
-            users[comment.author.name]["Posted"] = 1
+        try:
+            commentAge = now - comment.created_utc
+            if commentAge <= 604800 and comment.author.name not in modlist:
+                users[comment.author.name]["Posted"] = 1
+        except:
+            pass
 
 for user in users:
     #Kick users and add to removal list
@@ -46,7 +49,7 @@ for user in users:
             pass
         reddit.subreddit("HiddenCorner").flair.set(user, "Kicked", flair_template_id = "3bddf548-f29d-11e9-b16a-0ed4787532b4")
         hitList.append(user)
-        selfText += "- \#" + str(users[user]["Rank"]) + "\t/u/" + user + "  \n"
+        selfText += "- \#" + str(users[user]["Rank"]) + "\t /u/" + user + "  \n"
 
 for user in hitList:
     users.pop(user, None) #Remove kicked users from dict
@@ -61,8 +64,8 @@ for user in users:
 
 selfText += "#Added:\n\n"
 numToAdd = 102 - len(users)
-if numToAdd > 40:
-    numToAdd = 40 #NOTE: Remove restriction after sub reaches 100 members for 1st time
+#if numToAdd > 40:
+#    numToAdd = 40 #NOTE: Remove restriction after sub reaches 100 members for 1st time
 
 while len(addList) < numToAdd:
     # Creates add list
@@ -86,7 +89,7 @@ for user in addList:
     users[user] = {"Rank":lastRank + 1, "Posted":0}
     reddit.subreddit("HiddenCorner").flair.set(user, "#" + str(users[user]["Rank"]), flair_template_id = "676ff240-f29f-11e9-b538-0e052881cb30")
     lastRank = len(users) - 2
-    selfText += "- \#" + str(users[user]["Rank"]) + "\t/u/" + user + "  \n"
+    selfText += "- \#" + str(users[user]["Rank"]) + "\t /u/" + user + "  \n"
 
 with open("users.json", "w") as g:
     json.dump(users, g)
